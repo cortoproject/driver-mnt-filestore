@@ -16,20 +16,20 @@ void filestore_mount_onNotify(
     char *dir = corto_asprintf("%s/%s", this->storedir, event->data.parent);
     char *file = corto_asprintf("%s/%s.json", dir, event->data.id);
     if (event->event == CORTO_DELETE) {
-        if (corto_rm(file)) corto_error("failed to delete file '%s'", file);            
+        if (corto_rm(file)) corto_error("failed to delete file '%s'", file);
     } else {
         if (corto_mkdir(dir)) {
             corto_error("failed to create directory '%s'", dir);
         } else {
             FILE *f = fopen(file, "w");
-            fprintf(f, "{\"id\":\"%s%s%s\",\"type\":\"%s\",\"value\":%s}\n", 
+            fprintf(f, "{\"id\":\"%s%s%s\",\"type\":\"%s\",\"value\":%s}\n",
                 event->data.parent[0] == '.' ? "" : event->data.parent,
                 event->data.parent[0] == '.' ? "" : "/",
                 event->data.id,
                 event->data.type,
                 corto_result_getText(&event->data));
             fclose(f);
-        }      
+        }
     }
     free(file); free(dir);
 }
@@ -58,7 +58,7 @@ corto_resultIter filestore_mount_onQuery(
                     if (json) {
                         corto_result *r = corto_ptr_new(corto_result_o);
                         if (corto_result_fromcontent(r, "text/json", json)) {
-                            corto_error("filestore: %s", corto_lasterr());
+                            corto_raise();
                             continue;
                         }
                         if (!isDir) {
@@ -75,8 +75,7 @@ corto_resultIter filestore_mount_onQuery(
         }
         corto_chdir(prevCwd);
         free(prevCwd);
-        corto_closedir(files);        
+        corto_closedir(files);
     }
     return CORTO_ITER_EMPTY; /* Using corto_mount_return */
 }
-

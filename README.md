@@ -14,11 +14,11 @@ filestore.json:
       "select": "//",
       "from": "data"
     },
-    "policy.ownership": "LOCAL_OWNER"
+    "policy.ownership": "LOCAL_SOURCE"
   }
 }
 ```
-By setting `policy.ownership` to `LOCAL_OWNER`, objects in the store will be owned by the application. This ensures that when you restart the application, initial values from persisted objects are overwritten with the latest value from the store.
+By setting `policy.ownership` to `LOCAL_SOURCE`, objects in the store will be owned by the application. This ensures that when you restart the application, initial values from persisted objects are overwritten with the latest value from the store.
 
 You can load this file in your application, by doing:
 ```c

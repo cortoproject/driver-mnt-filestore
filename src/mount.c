@@ -9,7 +9,7 @@ int16_t filestore_mount_construct(
     return corto_super_construct(this);
 }
 
-void filestore_mount_onNotify(
+void filestore_mount_on_notify(
     filestore_mount this,
     corto_subscriberEvent *event)
 {
@@ -34,7 +34,7 @@ void filestore_mount_onNotify(
     free(file); free(dir);
 }
 
-corto_resultIter filestore_mount_onQuery(
+corto_resultIter filestore_mount_on_query(
     filestore_mount this,
     corto_query *query)
 {
@@ -56,16 +56,16 @@ corto_resultIter filestore_mount_onQuery(
                     ext[0] = '.'; /* Restore extension */
                     char *json = corto_file_load(file);
                     if (json) {
-                        corto_result *r = corto_ptr_new(corto_result_o);
-                        if (corto_result_fromcontent(r, "text/json", json)) {
+                        corto_result r = {0};
+                        if (corto_result_fromcontent(&r, "text/json", json)) {
                             corto_raise();
                             continue;
                         }
                         if (!isDir) {
-                            r->flags = CORTO_RESULT_LEAF;
+                            r.flags = CORTO_RESULT_LEAF;
                         }
-                        corto_mount_return(this, r);
-                        corto_ptr_free(r, corto_result_o);
+                        corto_mount_return(this, &r);
+                        corto_ptr_deinit(&r, corto_result_o);
                     } else {
                         corto_error("filestore: failed to load file '%s'", file);
                         continue;
@@ -76,6 +76,9 @@ corto_resultIter filestore_mount_onQuery(
         corto_chdir(prevCwd);
         free(prevCwd);
         corto_closedir(files);
+    } else {
+        corto_catch();
     }
+
     return CORTO_ITER_EMPTY; /* Using corto_mount_return */
 }

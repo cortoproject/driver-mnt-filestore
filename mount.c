@@ -8,14 +8,14 @@ int16_t filestore_mount_construct(
     /* Insert implementation */
 }
 
-void filestore_mount_onNotify(
+void filestore_mount_on_notify(
     filestore_mount this,
     corto_subscriberEvent *event)
 {
     /* Insert implementation */
 }
 
-corto_resultIter filestore_mount_onQuery(
+corto_resultIter filestore_mount_on_query(
     filestore_mount this,
     corto_query *query)
 {

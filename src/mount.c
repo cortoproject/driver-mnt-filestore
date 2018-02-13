@@ -11,7 +11,7 @@ int16_t filestore_mount_construct(
 
 void filestore_mount_on_notify(
     filestore_mount this,
-    corto_subscriberEvent *event)
+    corto_subscriber_event *event)
 {
     char *dir = corto_asprintf("%s/%s", this->storedir, event->data.parent);
     char *file = corto_asprintf("%s/%s.json", dir, event->data.id);

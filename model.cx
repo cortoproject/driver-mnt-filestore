@@ -3,5 +3,5 @@ in package /driver/mnt/filestore
 class mount: vstore/mount:/
     storedir: string
     int16 construct()
-    void on_notify(vstore/subscriberEvent event) override
+    void on_notify(vstore/subscriber_event event) override
     resultIter on_query(vstore/query query) override

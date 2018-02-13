@@ -10,7 +10,7 @@ int16_t filestore_mount_construct(
 
 void filestore_mount_on_notify(
     filestore_mount this,
-    corto_subscriberEvent *event)
+    corto_subscriber_event *event)
 {
     /* Insert implementation */
 }

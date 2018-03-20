@@ -15,6 +15,7 @@ void filestore_mount_on_notify(
 {
     char *dir = corto_asprintf("%s/%s", this->storedir, event->data.parent);
     char *file = corto_asprintf("%s/%s.json", dir, event->data.id);
+
     if (event->event == CORTO_DELETE) {
         if (corto_rm(file)) corto_error("failed to delete file '%s'", file);
     } else {
@@ -50,8 +51,8 @@ corto_resultIter filestore_mount_on_query(
                 /* Strip extension for matching */
                 ext[0] = '\0';
                 if (corto_idmatch(query->select, file)) {
-                    /* Test if there is a directory with same name, in which case
-                     * this file is not a leaf */
+                    /* Test if there is a directory with same name, in which
+                     * case this file is not a leaf */
                     bool isDir = corto_isdir(file);
                     ext[0] = '.'; /* Restore extension */
                     char *json = corto_file_load(file);
@@ -67,7 +68,8 @@ corto_resultIter filestore_mount_on_query(
                         corto_mount_return(this, &r);
                         corto_ptr_deinit(&r, corto_result_o);
                     } else {
-                        corto_error("filestore: failed to load file '%s'", file);
+                        corto_error(
+                            "filestore: failed to load file '%s'", file);
                         continue;
                     }
                 }
@@ -81,4 +83,15 @@ corto_resultIter filestore_mount_on_query(
     }
 
     return CORTO_ITER_EMPTY; /* Using corto_mount_return */
+}
+
+int16_t filestore_mount_init(
+    filestore_mount this)
+{
+    if (corto_super_init(this)) {
+        return -1;
+    }
+
+    this->super.policy.ownership = CORTO_LOCAL_SOURCE;
+    return 0;
 }

@@ -73,6 +73,17 @@ corto_resultIter filestore_mount_on_query(
                         continue;
                     }
                 }
+            } else {
+                /* If a directory is found, return a hidden unknown object */
+                if (corto_isdir(file)) {
+                    corto_result r = {
+                        .parent = query->from,
+                        .id = file,
+                        .type = "unknown",
+                        .flags = CORTO_RESULT_HIDDEN
+                    };
+                    corto_mount_return(this, &r);
+                }
             }
         }
         corto_chdir(prevCwd);

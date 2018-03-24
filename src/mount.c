@@ -47,6 +47,7 @@ corto_resultIter filestore_mount_on_query(
         corto_iter it = corto_ll_iter(files);
         while (corto_iter_hasNext(&it)) {
             char *file = corto_iter_next(&it), *ext = strrchr(file, '.');
+
             if (ext && !strcmp(ext, ".json")) {
                 /* Strip extension for matching */
                 ext[0] = '\0';
@@ -74,8 +75,13 @@ corto_resultIter filestore_mount_on_query(
                     }
                 }
             } else {
-                /* If a directory is found, return a hidden unknown object */
-                if (corto_isdir(file)) {
+                corto_id dir_with_ext;
+                sprintf(dir_with_ext, "%s.json", file);
+
+                /* If a directory is found, return a hidden unknown object. Only
+                 * return directory as separate object when no matching JSON
+                 * file is found */
+                if (corto_isdir(file) && !corto_file_test(dir_with_ext)) {
                     corto_result r = {
                         .parent = query->from,
                         .id = file,

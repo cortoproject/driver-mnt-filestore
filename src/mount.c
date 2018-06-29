@@ -5,7 +5,7 @@
 int16_t filestore_mount_construct(
     filestore_mount this)
 {
-    corto_mount_setContentType(this, "text/json");
+    corto_mount_set_format(this, "text/json");
     return corto_super_construct(this);
 }
 
@@ -23,12 +23,10 @@ void filestore_mount_on_notify(
             corto_error("failed to create directory '%s'", dir);
         } else {
             FILE *f = fopen(file, "w");
-            fprintf(f, "{\"id\":\"%s%s%s\",\"type\":\"%s\",\"value\":%s}\n",
-                event->data.parent[0] == '.' ? "" : event->data.parent,
-                event->data.parent[0] == '.' ? "" : "/",
+            fprintf(f, "{\"id\":\"%s\",\"type\":\"%s\",\"value\":%s}\n",
                 event->data.id,
                 event->data.type,
-                corto_result_getText(&event->data));
+                corto_result_get_text(&event->data));
             fclose(f);
         }
     }
@@ -39,6 +37,7 @@ corto_resultIter filestore_mount_on_query(
     filestore_mount this,
     corto_query *query)
 {
+
     char *dir = corto_asprintf("%s/%s", this->storedir, query->from);
     corto_ll files = corto_opendir(dir);
     if (files) {
@@ -66,7 +65,10 @@ corto_resultIter filestore_mount_on_query(
                         if (!isDir) {
                             r.flags = CORTO_RESULT_LEAF;
                         }
+                        corto_set_str(&r.parent, query->from);
+
                         corto_mount_return(this, &r);
+
                         corto_ptr_deinit(&r, corto_result_o);
                     } else {
                         corto_error(
@@ -109,6 +111,6 @@ int16_t filestore_mount_init(
         return -1;
     }
 
-    this->super.policy.ownership = CORTO_LOCAL_SOURCE;
+    this->super.ownership = CORTO_LOCAL_SOURCE;
     return 0;
 }

@@ -1,0 +1,11 @@
+in driver.mnt.filestore
+
+class mount: vstore/mount {
+    storedir: string
+    init() int16
+    construct() int16
+
+override
+    on_notify(vstore/subscriber_event event) void
+    on_query(vstore/query query) iterator[result]
+}

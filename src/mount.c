@@ -26,14 +26,14 @@ void filestore_mount_on_notify(
             fprintf(f, "{\"id\":\"%s\",\"type\":\"%s\",\"value\":%s}\n",
                 event->data.id,
                 event->data.type,
-                corto_result_get_text(&event->data));
+                corto_record_get_text(&event->data));
             fclose(f);
         }
     }
     free(file); free(dir);
 }
 
-corto_resultIter filestore_mount_on_query(
+corto_recordIter filestore_mount_on_query(
     filestore_mount this,
     corto_query *query)
 {
@@ -57,8 +57,8 @@ corto_resultIter filestore_mount_on_query(
                     ext[0] = '.'; /* Restore extension */
                     char *json = corto_file_load(file);
                     if (json) {
-                        corto_result r = {0};
-                        if (corto_result_fromcontent(&r, "text/json", json)) {
+                        corto_record r = {0};
+                        if (corto_record_fromcontent(&r, "text/json", json)) {
                             corto_raise();
                             continue;
                         }
@@ -69,7 +69,7 @@ corto_resultIter filestore_mount_on_query(
 
                         corto_mount_return(this, &r);
 
-                        corto_ptr_deinit(&r, corto_result_o);
+                        corto_ptr_deinit(&r, corto_record_o);
                     } else {
                         corto_error(
                             "filestore: failed to load file '%s'", file);
@@ -84,7 +84,7 @@ corto_resultIter filestore_mount_on_query(
                  * return directory as separate object when no matching JSON
                  * file is found */
                 if (corto_isdir(file) && !corto_file_test(dir_with_ext)) {
-                    corto_result r = {
+                    corto_record r = {
                         .parent = query->from,
                         .id = file,
                         .type = "unknown",

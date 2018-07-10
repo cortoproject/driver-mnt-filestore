@@ -7,5 +7,5 @@ class mount: vstore/mount {
 
 override
     on_notify(vstore/subscriber_event event) void
-    on_query(vstore/query query) iterator[result]
+    on_query(vstore/query query) iterator[record]
 }

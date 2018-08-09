@@ -30,7 +30,9 @@ void filestore_mount_on_notify(
             fclose(f);
         }
     }
-    free(file); free(dir);
+
+    free(file);
+    free(dir);
 }
 
 corto_recordIter filestore_mount_on_query(
@@ -63,7 +65,7 @@ corto_recordIter filestore_mount_on_query(
                             continue;
                         }
                         if (!isDir) {
-                            r.flags = CORTO_RESULT_LEAF;
+                            r.flags = CORTO_RECORD_LEAF;
                         }
                         corto_set_str(&r.parent, query->from);
 
@@ -88,7 +90,7 @@ corto_recordIter filestore_mount_on_query(
                         .parent = query->from,
                         .id = file,
                         .type = "unknown",
-                        .flags = CORTO_RESULT_HIDDEN
+                        .flags = CORTO_RECORD_HIDDEN | CORTO_RECORD_UNKNOWN
                     };
                     corto_mount_return(this, &r);
                 }

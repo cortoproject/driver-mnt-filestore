@@ -2,7 +2,7 @@
 Store and retrieve objects in/from JSON files
 
 ## Usage
-The easiest way to add a filestore to your project is to add a configuration file to your project and then load this file with `corto_use` in your application. Here's an example that recursively persists all objects under `/data`, and stores the files in `/tmp/myProjectStore`:
+The easiest way to add a filestore to your project is to add a configuration file to your project and then load this file with `ut_use` in your application. Here's an example that recursively persists all objects under `/data`, and stores the files in `/tmp/myProjectStore`:
 
 filestore.json:
 ```javascript
@@ -22,7 +22,7 @@ By setting `policy.ownership` to `LOCAL_SOURCE`, objects in the store will be ow
 
 You can load this file in your application, by doing:
 ```c
-if (corto_use("filestore.json", 0, NULL)) {
-    corto_error("%s", corto_lasterr());
+if (ut_use("filestore.json", 0, NULL)) {
+    ut_error("%s", ut_lasterr());
 }
 ```

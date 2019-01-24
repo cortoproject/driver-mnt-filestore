@@ -1,6 +1,6 @@
 /* This is a managed file. Do not delete this comment. */
 
-#include <driver/mnt/filestore/filestore.h>
+#include <driver.mnt.filestore>
 
 int cortomain(int argc, char *argv[]) {
 

@@ -6,19 +6,20 @@
 #ifndef DRIVER_MNT_FILESTORE_H
 #define DRIVER_MNT_FILESTORE_H
 
-#include <corto/corto.h>
-#include <driver/mnt/filestore/_project.h>
-#include <corto/c/c.h>
+#include "bake_config.h"
+
+#define DRIVER_MNT_FILESTORE_ETC ut_locate("driver.mnt.filestore", NULL, UT_LOCATE_ETC)
 
 /* $header() */
 /* Definitions that are required by package headers (native types) go here. */
 /* $end */
 
-#include <driver/mnt/filestore/_type.h>
-#include <driver/mnt/filestore/_interface.h>
-#include <driver/mnt/filestore/_load.h>
-#include <driver/mnt/filestore/_binding.h>
-#include <driver/mnt/filestore/c/_api.h>
+#include "_type.h"
+#include "_interface.h"
+#include "_load.h"
+#include "_binding.h"
+
+#include <driver.mnt.filestore.c>
 
 /* $body() */
 /* Definitions here that need your package headers go here. */

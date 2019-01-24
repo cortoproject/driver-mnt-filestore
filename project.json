@@ -1,10 +1,10 @@
 {
-    "id": "driver/mnt/filestore",
+    "id": "driver.mnt.filestore",
     "type": "package",
     "value": {
         "description": "Store and retrieve objects in/from JSON files",
         "author": "Sander Mertens",
-        "version": "1.0.0",
-        "language": "c"
-    }
+        "version": "1.0.0"
+    },
+    "corto": { }
 }
